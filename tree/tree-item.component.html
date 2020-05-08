@@ -1,0 +1,27 @@
+<div
+  class="tree-item"
+  *ngIf="data"
+  (click)="activate(data)"
+  (mousedown)="event($event, data)"
+  (contextmenu)="context($event, data)"
+  [ngClass]="{ active: isActive(data.id) }"
+>
+  <div class="lead" *ngFor="let l of levels">
+    <div class="ul"></div>
+    <div class="ur"></div>
+    <div class="ll"></div>
+    <div class="lr"></div>
+  </div>
+  <div class="icon" (click)="toggle(data)">
+    <i class="fa fa-folder" *ngIf="!data.expanded"></i
+    ><i class="fa fa-folder-open" *ngIf="data.expanded"></i>
+  </div>
+  <div class="text">{{ data.name }}</div>
+</div>
+<div *ngIf="data && data.expanded && data.children">
+  <mg-tree-item
+    *ngFor="let item of data.children"
+    [data]="item"
+    [level]="level"
+  ></mg-tree-item>
+</div>

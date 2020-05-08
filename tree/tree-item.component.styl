@@ -1,0 +1,76 @@
+$size ?= 15px
+
+.tree-item
+    height 25px
+    position relative
+    padding-left 5px
+
+    &:hover
+        cursor pointer
+        background #eeeeee
+        
+    &:hover.active
+        cursor pointer
+        background #60A1FF
+        
+    .lead
+        display block
+        float left
+        // background pink
+        width $size
+        height 25px
+
+        .ul
+            display block
+            float left
+            width 7px
+            height 12px
+            // background red
+            border-right 1px solid #cccccc
+
+        .ur
+            display block
+            float left
+            width 7px
+            height 12px
+            // background purple
+
+        .ll
+            display block
+            float left
+            width 7px
+            height 13px
+            // background red
+            border-right 1px solid #cccccc
+
+        .lr
+            display block
+            float left
+            width 7px
+            height 13px
+            // background purple
+
+    .icon
+        display block
+        float left
+        height $size
+        width $size
+        text-align center
+        padding-top 5px
+        padding-bottom 5px
+        color #1C81DB
+
+    .text
+        display block
+        float left
+        padding-top 5px
+        padding-bottom 5px
+        padding-left 5px
+        width 130px
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+
+.active
+    background #4495FF
+    color white

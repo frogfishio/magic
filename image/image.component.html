@@ -1,0 +1,23 @@
+<div
+  [ngStyle]="{ 'background-image': 'url(' + activeImage + ')', display: 'block' }"
+  [ngClass]="{'clickable': onClicked, 'mg-img-drag': state === 'drag', 'mg-img': mode !== 'round', 'mg-img-round': mode === 'round'}"
+  (click)="click()"
+>
+  <!--<mg-spinner *ngIf="busy && spinnerSize === 0" [mode]="spinnerMode" [size]="spinnerSize"></mg-spinner>-->
+  <!--<mg-spinner *ngIf="busy && spinnerSize > 0" [mode]="spinnerMode" [size]="spinnerSize"-->
+  <!--[ngStyle]="{'padding-top': 'calc(100% / 2 - 33px)'}"></mg-spinner>-->
+  <i class="fa fa-times deletable" *ngIf="onDeleted" (click)="remove()"></i>
+  <div class="selector" [ngClass]="{'selected': selected}" *ngIf="onSelected" (click)="select()"></div>
+  <mg-spinner *ngIf="busy && spinnerSize === 0" [mode]="spinnerMode" [size]="spinnerSize"></mg-spinner>
+  <mg-spinner
+    *ngIf="busy && spinnerSize > 0"
+    [mode]="spinnerMode"
+    [size]="spinnerSize"
+    [ngStyle]="{
+      width: spinnerSize,
+      height: spinnerSize,
+      position: 'relative',
+      top: 'calc(100% / 2 - (' + spinnerSize + 'px / 2))'
+    }"
+  ></mg-spinner>
+</div>
