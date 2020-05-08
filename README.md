@@ -1,0 +1,2 @@
+# magic
+Common angular components
