@@ -1,11 +1,11 @@
-$navigator-nav-width=50px
+$navigator-nav-width = 50px
 
 .mg-navigator-nav
   img
     margin 5px
     width 40px
 
-  i 
+  i
     font-size 20px
     width 40px
     margin 5px
@@ -13,16 +13,44 @@ $navigator-nav-width=50px
     margin-bottom 20px
     text-align center
     line-height 10px
-  
+
   &:hover
     background #444444
     cursor pointer
 
 .mg-sidenav-navigator-collapsed
-  display none;
+  display none
 
 .mg-sidenav-navigator-expanded
   width 300px
 
 .mg-sidenav-navigator-default
   width $navigator-nav-width
+
+.mg-navigator-nav
+  // background purple
+
+  ::content ::ng-deep
+    img
+      margin 5px
+      width 40px
+
+    i
+      font-size 20px
+      width 40px
+      margin 5px
+      margin-top 20px
+      margin-bottom 20px
+      text-align center
+      line-height 10px
+
+    fa-icon
+      display block
+      font-size 20px
+      width 40px
+      padding 5px
+      padding-top 15px
+      padding-bottom 15px
+      text-align center
+      line-height 20px
+      margin auto

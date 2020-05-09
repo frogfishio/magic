@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'mg-sidenav-nav',
   templateUrl: './navigator-nav.component.html',
-  styleUrls: ['./navigator-nav.component.css']
+  styleUrls: ['./navigator-nav.component.styl']
 })
 export class MgSideNavNavComponent implements OnInit {
   @Input()
