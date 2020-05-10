@@ -1,6 +1,6 @@
-@import "../defaults"
+@import "defaults"
 
-$button-border := 1px solid
+$button-border := 0px solid
 $button-side-padding := 20px
 $button-border-radius := 0px
 
@@ -73,7 +73,7 @@ $button-danger-border := $button-border $button-color-danger-border
 .mg-button.default 
   background-color $button-color-default
   color $button-color-default-reverse
-  border 1px solid $button-default-border
+  border $button-default-border
 
 .mg-button.default:hover:enabled
   background $button-color-default-hover

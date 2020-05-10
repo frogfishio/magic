@@ -1,0 +1,18 @@
+<div *ngIf="ready">
+  <ng-content></ng-content>
+</div>
+<div class="loader center" *ngIf="!ready && center">
+  <div class="spacer" *ngIf="center"></div>
+  <div class="mg-loader">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>
+<div class="loader" *ngIf="!ready && !center">
+  <div class="mg-loader">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>

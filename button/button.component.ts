@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: "mg-button",
-  templateUrl: "./button.component.html"
+  selector: 'mg-button',
+  templateUrl: './button.component.html',
+  styleUrls: ['./button.component.styl'],
 })
 export class MgButtonComponent {
   @Input()
@@ -16,10 +17,10 @@ export class MgButtonComponent {
   }
 
   get class() {
-    return this._class || "default";
+    return this._class || 'default';
   }
 
-  private _class = "default";
+  private _class = 'default';
 
   processing;
 
@@ -38,7 +39,7 @@ export class MgButtonComponent {
           .then(() => {
             this.processing = false;
           })
-          .catch(err => {
+          .catch((err) => {
             this.processing = false;
             console.log(err);
           });
