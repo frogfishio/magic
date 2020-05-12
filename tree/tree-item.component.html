@@ -13,8 +13,8 @@
     <div class="lr"></div>
   </div>
   <div class="icon" (click)="toggle(data)">
-    <i class="fa fa-folder" *ngIf="!data.expanded"></i
-    ><i class="fa fa-folder-open" *ngIf="data.expanded"></i>
+    <i class="icon-folder-closed" *ngIf="!data.expanded"></i
+    ><i class="icon-folder-open" *ngIf="data.expanded"></i>
   </div>
   <div class="text">{{ data.name }}</div>
 </div>
