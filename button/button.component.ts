@@ -7,10 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./button.component.styl'],
 })
 export class MgButtonComponent {
-  @Input()
-  navigate: string;
-  @Input()
-  action;
+  @Input() navigate: string;
+  @Input() action;
 
   @Input() set class(value: string) {
     this._class = value;
