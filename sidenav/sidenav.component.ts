@@ -1,48 +1,50 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { MgSideNavNavComponent } from './navigator-nav.component';
-
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Input, OnInit, AfterContentInit } from '@angular/core';
 
 @Component({
   selector: 'mg-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.css']
+  styleUrls: ['./sidenav.component.styl'],
 })
-export class MgSideNavComponent implements OnInit {
-  private _tabs: MgSideNavNavComponent[] = [];
-
+export class MgSideNavComponent implements OnInit, AfterContentInit {
   @Input()
   mode: string = 'default';
 
-  value;
-  
+  // @ViewChildren(ChildDirective) viewChildren!: QueryList<ChildDirective>;
+
+  // private _tabs: MgSideNavNavComponent[] = [];
+  // value;
+
   ngOnInit(): void {}
 
-  get tabs() {
-    const rtabs = [];
-    for (const tab of this._tabs) {
-      if (tab.watch && tab.watch.length > 0) {
-        if (tab.watch.indexOf(this.value) > -1) {
-          rtabs.push(tab);
-        }
-      } else {
-        rtabs.push(tab);
-      }
-    }
-
-    return rtabs;
+  ngAfterContentInit() {
+    // contentChild is set
   }
 
-  register(tab: MgSideNavNavComponent) {
-    this._tabs.push(tab);
-    if (this._tabs.length === 1) {
-      tab.active = true;
-    }
-  }
+  // get tabs() {
+  //   const rtabs = [];
+  //   for (const tab of this._tabs) {
+  //     if (tab.watch && tab.watch.length > 0) {
+  //       if (tab.watch.indexOf(this.value) > -1) {
+  //         rtabs.push(tab);
+  //       }
+  //     } else {
+  //       rtabs.push(tab);
+  //     }
+  //   }
 
-  select(tab) {
-    for (const t of this._tabs) {
-      t.active = t === tab;
-    }
-  }
+  //   return rtabs;
+  // }
+
+  // register(tab: MgSideNavNavComponent) {
+  //   this._tabs.push(tab);
+  //   if (this._tabs.length === 1) {
+  //     tab.active = true;
+  //   }
+  // }
+
+  // select(tab) {
+  //   for (const t of this._tabs) {
+  //     t.active = t === tab;
+  //   }
+  // }
 }
