@@ -1,4 +1,4 @@
-<div class="mg-navigator-nav" (click)="activate()" [ngClass]="style">
+<div class="mg-navigator-nav" [ngClass]="{ 'mg-navgator-nav-active': active }" (click)="activate()">
   <ng-content></ng-content>
 </div>
-<!-- <div class="chevron"></div> -->
+<div class="chevron" *ngIf="active"></div>

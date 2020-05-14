@@ -1,50 +1,45 @@
-import { Component, Input, OnInit, AfterContentInit } from '@angular/core';
+import { Component, Input, OnInit, AfterContentInit, ViewChildren, QueryList } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'mg-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.styl'],
 })
-export class MgSideNavComponent implements OnInit, AfterContentInit {
-  @Input()
-  mode: string = 'default';
+export class MgSideNavComponent implements OnInit {
+  private _activeRoute;
+  private _subscribers: Array<(route: string) => void> = [];
 
-  // @ViewChildren(ChildDirective) viewChildren!: QueryList<ChildDirective>;
+  private set activeRoute(route: string) {
+    if (route) {
+      this._activeRoute = route;
+      for (const subscriber of this._subscribers) {
+        subscriber(route);
+      }
+    }
+  }
 
-  // private _tabs: MgSideNavNavComponent[] = [];
-  // value;
+  private get activeRoute() {
+    return this._activeRoute;
+  }
+
+  constructor(private _router: Router) {
+    _router.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        if (val.url.indexOf('?') === -1) {
+          this.activeRoute = val.url;
+        } else {
+          this.activeRoute = val.url.split('?')[0];
+        }
+      }
+    });
+  }
 
   ngOnInit(): void {}
 
-  ngAfterContentInit() {
-    // contentChild is set
+  register(changeListener: (route: string) => void) {
+    if (this._subscribers.indexOf(changeListener) === -1) {
+      this._subscribers.push(changeListener);
+    }
   }
-
-  // get tabs() {
-  //   const rtabs = [];
-  //   for (const tab of this._tabs) {
-  //     if (tab.watch && tab.watch.length > 0) {
-  //       if (tab.watch.indexOf(this.value) > -1) {
-  //         rtabs.push(tab);
-  //       }
-  //     } else {
-  //       rtabs.push(tab);
-  //     }
-  //   }
-
-  //   return rtabs;
-  // }
-
-  // register(tab: MgSideNavNavComponent) {
-  //   this._tabs.push(tab);
-  //   if (this._tabs.length === 1) {
-  //     tab.active = true;
-  //   }
-  // }
-
-  // select(tab) {
-  //   for (const t of this._tabs) {
-  //     t.active = t === tab;
-  //   }
-  // }
 }

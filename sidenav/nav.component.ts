@@ -1,49 +1,37 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MgSideNavComponent } from './sidenav.component';
 import { Router } from '@angular/router';
+import { MgSideNavComponent } from './sidenav.component';
 
 @Component({
   selector: 'mg-sidenav-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.styl']
+  styleUrls: ['./nav.component.styl'],
 })
 export class MgSideNavNavComponent implements OnInit {
-  @Input()
-  title: string;
-  @Input()
-  watch: Array<string>;
+  @Input() title: string;
+  @Input() watch: Array<string>;
+  @Input() image: string;
+  @Input() icon: string;
+  @Input() navigate: string;
 
-  @Input()
-  image: string;
-  @Input()
-  icon: string;
-  @Input()
-  navigate: string;
-
-  @Input()
-  show: boolean = true;
+  @Input() show: boolean = true;
 
   private _active = false;
 
-  constructor(private sidenav: MgSideNavComponent, private router: Router) {}
-
-  get style() {
-    if (this.show !== true) {
-      return 'mg-sidenav-navigator-collapsed';
-    }
-    switch (this.sidenav.mode) {
-      case 'collapsed':
-        return 'mg-sidenav-navigator-collapsed';
-      case 'expanded':
-        return 'mg-sidenav-navigator-expanded';
-      default:
-        return 'mg-sidenav-navigator-default';
-    }
+  constructor(private _router: Router, private _sidenav: MgSideNavComponent) {
+    _sidenav.register((route: string) => {
+      console.log(`Setting ${route}`);
+      if (route === this.navigate || this.navigate === '/' + route.split('/')[1]) {
+        this._active = true;
+      } else {
+        this._active = false;
+      }
+    });
   }
 
   activate() {
     if (this.navigate) {
-      this.router.navigateByUrl(this.navigate);
+      this._router.navigateByUrl(this.navigate);
     }
   }
 
@@ -56,14 +44,6 @@ export class MgSideNavNavComponent implements OnInit {
   }
 
   set active(value) {
-    // console.log('ACT: ' + this.tabBar.value);
-    // if (this.watch && this.watch.length > 0) {
-    //   if (this.tabBar.value && this.watch.indexOf(this.tabBar.value) > -1) {
-    //     this._active = value;
-    //   }
-    // } else {
-    //
-    // }
     this._active = value;
   }
 }
