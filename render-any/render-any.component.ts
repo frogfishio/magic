@@ -12,7 +12,8 @@ export class MgRenderAnyComponent implements OnInit {
   constructor(private _auth: AuthService) {}
 
   get render() {
-    return this._auth.isLoggedInWithPermission(this.permissions) ? 'initial' : 'none';
+    const val = this._auth.isLoggedInWithPermission(this.permissions);
+    return val;
   }
 
   ngOnInit() {}
