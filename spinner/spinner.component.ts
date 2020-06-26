@@ -3,7 +3,7 @@ import {Component, Input, Renderer2, ElementRef, OnInit, Directive} from '@angul
 @Component({
   selector: 'mg-spinner',
   templateUrl: './spinner.component.html',
-  styleUrls: ['./spinner.component.css']
+  styleUrls: ['./spinner.component.styl']
 })
 export class MgSpinnerComponent implements OnInit {
 
