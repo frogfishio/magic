@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/service/auth.service';
   styleUrls: ['./render-any.component.styl'],
 })
 export class MgRenderAnyComponent implements OnInit {
-  @Input() permissions: Array<string>;
+  @Input() permissions: Array<string> = [];
 
   constructor(private _auth: AuthService) {}
 

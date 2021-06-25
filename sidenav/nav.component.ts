@@ -5,14 +5,14 @@ import { MgSideNavComponent } from './sidenav.component';
 @Component({
   selector: 'mg-sidenav-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.styl'],
+  styleUrls: ['./nav.component.sass'],
 })
 export class MgSideNavNavComponent implements OnInit {
-  @Input() title: string;
-  @Input() watch: Array<string>;
-  @Input() image: string;
-  @Input() icon: string;
-  @Input() navigate: string;
+  @Input() title = '';
+  @Input() watch: Array<string> = [];
+  @Input() image = '';
+  @Input() icon = '';
+  @Input() navigate = '';
 
   @Input() show: boolean = true;
 

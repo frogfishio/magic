@@ -1,6 +1,7 @@
 .mg-sidenav {
-  width: 100%;
+  width: 50px;
   height: 100%;
+  background: #333333;
+  color: white;
 }
-
-/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFwcC9tYWdpYy9zaWRlbmF2L3NpZGVuYXYuY29tcG9uZW50LnN0eWwiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBS0E7RUFDRSxPQUFNLEtBQU47RUFDQSxRQUFPLEtBQVAiLCJmaWxlIjoiYXBwL21hZ2ljL3NpZGVuYXYvc2lkZW5hdi5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLy8gJHNpZGVuYXYtYmFja2dyb3VuZD0jMzMzM1xuLy8gJHNpZGVuYXYtY29sb3I9d2hpdGVcbiRzaWRlbmF2LXdpZHRoPTEwMCVcbiRzaWRlbmF2LWhlaWdodD0xMDAlXG5cbi5tZy1zaWRlbmF2XG4gIHdpZHRoICRzaWRlbmF2LXdpZHRoXG4gIGhlaWdodCAkc2lkZW5hdi1oZWlnaHRcbiAgLy8gYmFja2dyb3VuZCAkc2lkZW5hdi1iYWNrZ3JvdW5kXG4gIC8vIGNvbG9yICRzaWRlbmF2LWNvbG9yXG4gICJdfQ== */
+/*# sourceMappingURL=sidenav.component.css.map */

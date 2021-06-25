@@ -4,10 +4,10 @@ import { Router, NavigationEnd } from '@angular/router';
 @Component({
   selector: 'mg-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.styl'],
+  styleUrls: ['./sidenav.component.sass'],
 })
 export class MgSideNavComponent implements OnInit {
-  private _activeRoute;
+  private _activeRoute = '';
   private _subscribers: Array<(route: string) => void> = [];
 
   private set activeRoute(route: string) {
