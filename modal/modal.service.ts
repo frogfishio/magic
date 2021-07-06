@@ -9,15 +9,18 @@ export class MgModalService {
 
   constructor(private appRef: ApplicationRef, private componentFactoryResolver: ComponentFactoryResolver) { }
 
+  // IMPORTANT
+  // APP COMPONENT MUST HAVE
+  // constructor(public viewContainerRef: ViewContainerRef)
+
   create(component: any, data?: any, onClose?: () => undefined) {
+
+    console.log(`Creating ...`);
+
     let cf = this.componentFactoryResolver.resolveComponentFactory(component);
-    // this._viewContainerRef = (this.appRef.components[0].instance as AppComponent).viewContainerRef;
+    this._viewContainerRef = (this.appRef.components[0].instance as AppComponent).viewContainerRef;
     this.viewContainerRef.clear();
     this._active = this.viewContainerRef.createComponent(cf);
-
-    // for (let i in this._active.instance) {
-    //   console.log(`${i} -> ${this._active.instance[i]}`);
-    // }
 
     if (data) {
       for (const name of Object.getOwnPropertyNames(data)) {
@@ -28,7 +31,7 @@ export class MgModalService {
 
   destroy() {
     // let cf = this.componentFactoryResolver.resolveComponentFactory(component);
-    // this._viewContainerRef = (this.appRef.components[0].instance as AppComponent).viewContainerRef;
+    this._viewContainerRef = (this.appRef.components[0].instance as AppComponent).viewContainerRef;
 
     if (this.viewContainerRef) {
       this.viewContainerRef.clear();
