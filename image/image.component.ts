@@ -22,25 +22,25 @@ export class MgImageComponent implements OnInit {
   @Input() suffix: string = ""; // append to the image src url
 
   @Input() mode = ""; // round | anything else = default
-  @Input() spinnerMode: string; // round | anything else = default
+  @Input() spinnerMode?: string; // round | anything else = default
   @Input() spinnerSize = 50; // round | anything else = default
 
-  @Input("default") defaultImage;
-  @Input() loading;
-  @Input() error;
-  @Input() upload: string; // upload service URL
-  @Input() meta; // meta data to push with upload
-  @Input() token: string; // OAuth bearer token
-  @Input() acceptDrop: boolean;
-  @Input() autoUpload: boolean;
+  @Input("default") defaultImage: any;
+  @Input() loading: any;
+  @Input() error: any;
+  @Input() upload?: string; // upload service URL
+  @Input() meta: any; // meta data to push with upload
+  @Input() token?: string; // OAuth bearer token
+  @Input() acceptDrop?: boolean;
+  @Input() autoUpload?: boolean;
 
-  @Input() onLoaded;
-  @Input() onError;
-  @Input() onUploaded;
+  @Input() onLoaded: any;
+  @Input() onError: any;
+  @Input() onUploaded?: (arg0: any) => void;
 
-  @Input() onClicked;
-  @Input() onSelected;
-  @Input() onDeleted;
+  @Input() onClicked?: (arg0: this) => any;
+  @Input() onSelected?: (arg0: this) => any;
+  @Input() onDeleted?: (arg0: this) => any;
 
   @Input()
   set src(value) {
@@ -74,11 +74,11 @@ export class MgImageComponent implements OnInit {
     }
   }
 
-  private _src;
-  private _state = "init";
+  private _src: any;
+  private _state?= "init";
   private _busy = false;
-  private _last_state;
-  private _result;
+  private _last_state?: string;
+  private _result: any;
 
   get src() {
     if (this._result) {
@@ -87,7 +87,7 @@ export class MgImageComponent implements OnInit {
     return this._src;
   }
 
-  activeImage;
+  activeImage?: string;
   selected = false;
 
   get state() {
@@ -108,7 +108,7 @@ export class MgImageComponent implements OnInit {
     this.prefix = _configuration.get("api") + "/content/render/"; //http://localhost:8888/v1/content/render/
   }
 
-  isDropTarget(el) {
+  isDropTarget(el: any) {
     return el === this._elementRef.nativeElement.querySelector("div");
   }
 
@@ -138,22 +138,31 @@ export class MgImageComponent implements OnInit {
     }
   }
 
-  private loadPreview(file, callback) {
+  private loadPreview(file: Blob, callback: (err?: string) => void) {
     const reader = new FileReader();
     reader.onload = ev => {
-      const image = new Image();
-      image.src = ev.target["result"].toString();
-      this.activeImage = image.src;
-      callback();
+      const target = ev.target;
+      if (target && target.result) {
+        const image = new Image();
+        image.src = target.result.toString();
+        this.activeImage = image.src;
+        return callback();
+      }
+
+      return ('Unable to load image from file');
     };
-    reader.onerror = ev => {};
-    reader.onprogress = ev => {};
+    reader.onerror = ev => { };
+    reader.onprogress = ev => { };
 
     reader.readAsDataURL(file);
   }
 
-  private uploadFile(file): Promise<any> {
+  private uploadFile(file: string | Blob): Promise<any> {
     return new Promise((resolve, reject) => {
+
+      if (!this.upload) {
+        return reject('Invalid configuration, upload destination not configured');
+      }
       const formData = new FormData();
       const xhr = new XMLHttpRequest();
 
@@ -210,20 +219,20 @@ export class MgImageComponent implements OnInit {
         console.log("enter");
       }
     };
-    container.ondragover = ev => {
+    container.ondragover = (ev: { preventDefault: () => void; }) => {
       ev.preventDefault();
     };
     container.ondragleave = () => {
       if (!this._busy) {
         this._state = this._last_state;
-        this._last_state = null;
+        this._last_state = undefined;
         console.log("leave");
       }
     };
-    container.ondrop = ev => {
+    container.ondrop = (ev: any) => {
       if (!this._busy) {
         this._state = this._last_state;
-        this._last_state = null;
+        this._last_state = undefined;
         ev.preventDefault();
         console.log("DRO: " + ev.dataTransfer.files[0].name);
         const file = ev.dataTransfer.files[0];
@@ -272,10 +281,10 @@ export class MgImageComponent implements OnInit {
     fetch(this.prefix + this.src + this.suffix, {
       headers: { Authorization: `Bearer ${this._shared.get("access_token")}` }
     })
-      .then(function(response) {
+      .then(function (response) {
         return response.blob();
       })
-      .then(function(myBlob) {
+      .then(function (myBlob) {
         var objectURL = URL.createObjectURL(myBlob);
         image.src = objectURL;
       });

@@ -8,36 +8,37 @@ import { MgImageComponent } from '../image/image.component';
   styleUrls: ['./gallery.component.css']
 })
 export class MgGalleryComponent implements OnInit {
-  @Input('ngModel') images;
-  @Input() prefix: string;
-  @Input() suffix: string;
+  @Input('ngModel') images: any;
+  @Input() prefix?: string;
+  @Input() suffix?: string;
 
-  @Input() upload; // upload service URL
-  @Input() meta; // meta data to push with upload
-  @Input() token; // OAuth bearer token
-  @Input() acceptDrop;
+  @Input() upload?: string; // upload service URL
+  @Input() meta?: any; // meta data to push with upload
+  @Input() token?: string; // OAuth bearer token
+  @Input() acceptDrop: boolean | string = false;
 
-  @Input() onLoaded;
-  @Input() onError;
-  @Input() onUploaded; // deprecates see onUpdate
-  @Input() onUpdated;
+  @Input() onLoaded?: any;
+  @Input() onError?: any;
+  @Input() onUploaded?: any; // deprecates see onUpdate
+  @Input() onUpdated?: any;
 
-  @Input() onSelect;
-  @Input() onClick;
+  @Input() onSelect?: any;
+  @Input() onClick?: any;
 
   // @ViewChildren(MgImageComponent, { read: ElementRef }) imageComponents: QueryList<MgImageComponent>;
-  @ViewChildren(MgImageComponent) imageComponents: QueryList<MgImageComponent>;
+  @ViewChildren(MgImageComponent) imageComponents?: QueryList<MgImageComponent>;
 
   private _busy = false;
-  private _state;
-  private _last_state;
-  private _selected = [];
+  private _state?: string;
+  private _last_state?: string;
+  private _selected: Array<any> = [];
 
   get state() {
     return this._state;
+
   }
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(private elementRef: ElementRef) { }
 
   // drop(ev) {
   //   console.log(`Dropped: ${ev}`);
@@ -47,30 +48,32 @@ export class MgGalleryComponent implements OnInit {
   //   console.log(`allow: ${ev}`);
   // }
 
-  drag(ev) {
+  drag(ev: any) {
     console.log(`Start -> ${ev}`);
     ev.dataTransfer.setData('text', 'jdiusajdiasdiajsdisajdisjaidasjdijaidjia');
   }
 
-  remove = image => {
-    let idx;
-    const imgComp = this.imageComponents.toArray();
+  remove = (image: MgImageComponent) => {
+    if (this.imageComponents) {
+      let idx;
+      const imgComp = this.imageComponents.toArray();
 
-    if ((idx = imgComp.indexOf(image)) !== -1) {
-      this.images.splice(idx, 1);
-      imgComp.splice(idx, 1);
-    }
+      if ((idx = imgComp.indexOf(image)) !== -1) {
+        this.images.splice(idx, 1);
+        imgComp.splice(idx, 1);
+      }
 
-    if ((idx = this._selected.indexOf(image)) !== -1) {
-      this._selected.splice(idx, 1);
-    }
+      if ((idx = this._selected.indexOf(image)) !== -1) {
+        this._selected.splice(idx, 1);
+      }
 
-    if (this.onUpdated) {
-      return this.onUpdated(this.getImageArray(imgComp));
+      if (this.onUpdated) {
+        return this.onUpdated(this.getImageArray(imgComp));
+      }
     }
   };
 
-  select = image => {
+  select = (image: any) => {
     const idx = this._selected.indexOf(image);
     if (idx === -1) {
       this._selected.push(image);
@@ -83,7 +86,7 @@ export class MgGalleryComponent implements OnInit {
     }
   };
 
-  click = image => {
+  click = (image: any) => {
     if (this.onClick) {
       return this.onClick(image.src);
     }
@@ -95,7 +98,7 @@ export class MgGalleryComponent implements OnInit {
     }
   }
 
-  imageUploadCallback = params => {
+  imageUploadCallback = (params: any) => {
     console.log(`Gallery image uplaoded ${params}`);
     if (this.onUpdated) {
       return this.onUpdated(this.getImageArray());
@@ -104,40 +107,56 @@ export class MgGalleryComponent implements OnInit {
 
   private getImageArray(arr?: Array<any>) {
     const res = [];
-    arr = arr || this.imageComponents.toArray();
-    console.log(`Image components: ${arr.length}`);
-    for (const image of arr) {
-      res.push(image.src);
+    if (this.imageComponents) {
+      arr = arr || this.imageComponents.toArray();
+      console.log(`Image components: ${arr.length}`);
+      for (const image of arr) {
+        res.push(image.src);
+      }
     }
+
     return res;
   }
 
-  private move(destination, id) {
+  private move(destination: any, id: string) {
     // console.log(`Moving ${id}`);
-    const images = this.imageComponents.toArray();
-    const destIdx = images.indexOf(this.targetToComponent(destination));
-    const srcIdx = images.indexOf(this.srcToComponent(id));
-    this.images.splice(destIdx, 0, this.images.splice(srcIdx, 1)[0]);
-    images.splice(destIdx, 0, images.splice(srcIdx, 1)[0]);
-    if (this.onUpdated) {
-      return this.onUpdated(this.getImageArray(images));
-    }
-  }
+    if (this.imageComponents) {
+      const images = this.imageComponents.toArray();
+      const src = this.srcToComponent(id);
+      const dest = this.targetToComponent(destination);
 
-  private targetToComponent(target) {
-    const imgComp = this.imageComponents.toArray();
-    for (const img of imgComp) {
-      if (img.isDropTarget(target)) {
-        return img;
+      if (src && dest) {
+        const destIdx = images.indexOf(dest);
+        const srcIdx = images.indexOf(src);
+        this.images.splice(destIdx, 0, this.images.splice(srcIdx, 1)[0]);
+        images.splice(destIdx, 0, images.splice(srcIdx, 1)[0]);
+        if (this.onUpdated) {
+          return this.onUpdated(this.getImageArray(images));
+        }
       }
     }
   }
 
+  private targetToComponent(target: any) {
+    if (this.imageComponents) {
+      const imgComp = this.imageComponents.toArray();
+      for (const img of imgComp) {
+        if (img.isDropTarget(target)) {
+          return img;
+        }
+      }
+    }
+    return null;
+  }
+
   private srcToComponent(src: string) {
-    const imgComp = this.imageComponents.toArray();
-    for (const component of imgComp) {
-      if (component.src === src) {
-        return component;
+
+    if (this.imageComponents) {
+      const imgComp = this.imageComponents.toArray();
+      for (const component of imgComp) {
+        if (component.src === src) {
+          return component;
+        }
       }
     }
 
@@ -155,20 +174,20 @@ export class MgGalleryComponent implements OnInit {
         // console.log('enter');
       }
     };
-    container.ondragover = ev => {
+    container.ondragover = (ev: any) => {
       ev.preventDefault();
     };
     container.ondragleave = () => {
       if (!this._busy) {
         this._state = this._last_state;
-        this._last_state = null;
+        this._last_state = undefined;
         // console.log('leave');
       }
     };
-    container.ondrop = ev => {
+    container.ondrop = (ev: any) => {
       if (!this._busy) {
         this._state = this._last_state;
-        this._last_state = null;
+        this._last_state = undefined;
         ev.preventDefault();
 
         if (ev.target !== container) {
@@ -182,7 +201,7 @@ export class MgGalleryComponent implements OnInit {
         }
       }
     };
-    container.ondragstart = ev => {
+    container.ondragstart = (ev: any) => {
       const component = this.targetToComponent(ev.target.querySelector('div'));
       if (component) {
         ev.dataTransfer.setData('text', component.src);
