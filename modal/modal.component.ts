@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { ModalService } from './modal.service';
+import { MgModalService } from './modal.service';
 
 @Component({
   selector: 'mg-modal',
@@ -7,7 +7,7 @@ import { ModalService } from './modal.service';
   styleUrls: ['./modal.component.sass'],
 })
 export class MgModalComponent implements OnInit, OnDestroy {
-  constructor(private _modalService: ModalService) {}
+  constructor(private _modalService: MgModalService) {}
 
   open(): void {}
 
