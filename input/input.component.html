@@ -5,3 +5,11 @@
   <input type="text" [placeholder]="placeholder" [value]="value" />
   <i class="icon-chevron-up chevron"></i>
 </div>
+<div class="pack" *ngIf="type == 'edit'">
+  <textarea [placeholder]="placeholder" [value]="value"></textarea>
+</div>
+<div class="toggle" *ngIf="type == 'toggle'" (click)="toggle()">
+  <div class="wrap">
+    <div class="slider off" [ngClass]="{'on': value === onValue}"></div>
+  </div>
+</div>
