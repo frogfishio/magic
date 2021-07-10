@@ -3,22 +3,23 @@ import { Component, OnInit, Input } from '@angular/core';
 @Component({
   selector: 'mg-searchbox',
   templateUrl: './searchbox.component.html',
-  styleUrls: ['./searchbox.component.styl']
+  styleUrls: ['./searchbox.component.sass']
 })
 export class MgSearchboxComponent implements OnInit {
-  @Input() action: () => Promise<any>;
-  @Input() disabled: boolean;
-  @Input() type: string;
-  @Input() color: string;
+  @Input() action?: () => Promise<any>;
+  @Input() disabled: boolean = false;
+  @Input() type?: string;
+  @Input() color?: string;
 
   error = false;
   busy = false;
 
-  constructor() {}
+  constructor() { }
 
   async clicked() {
     if (!this.action) {
-      return (this.error = true);
+      this.error = true;
+      return;
     }
 
     try {
@@ -34,5 +35,5 @@ export class MgSearchboxComponent implements OnInit {
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }
