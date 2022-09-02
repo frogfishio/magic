@@ -1,31 +1,24 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import {
-  Component,
-  Input,
-  Renderer2,
-  ElementRef,
-  OnInit,
-  Directive
-} from "@angular/core";
-import { AuthService } from "../../service/auth.service";
-import { SharedDataService } from "src/app/service/shared.service";
-import { ConfigurationService } from "src/app/service/configuration.service";
+import { Component, Input, Renderer2, ElementRef, OnInit, Directive } from '@angular/core';
+import { AuthService } from '../../service/auth.service';
+import { SharedDataService } from 'src/app/service/shared.service';
+import { ConfigurationService } from 'src/app/service/configuration.service';
 
 @Component({
-  selector: "mg-img",
-  templateUrl: "./image.component.html",
-  styleUrls: ["./image.component.css"]
+  selector: 'mg-img',
+  templateUrl: './image.component.html',
+  styleUrls: ['./image.component.css'],
 })
 export class MgImageComponent implements OnInit {
-  @Input() prefix: string = ""; // prepend to image src url
-  @Input() suffix: string = ""; // append to the image src url
+  @Input() prefix?: string = ''; // prepend to image src url
+  @Input() suffix?: string = ''; // append to the image src url
 
-  @Input() mode = ""; // round | anything else = default
+  @Input() mode = ''; // round | anything else = default
   @Input() spinnerMode?: string; // round | anything else = default
   @Input() spinnerSize = 50; // round | anything else = default
 
-  @Input("default") defaultImage: any;
+  @Input('default') defaultImage: any;
   @Input() loading: any;
   @Input() error: any;
   @Input() upload?: string; // upload service URL
@@ -46,24 +39,24 @@ export class MgImageComponent implements OnInit {
   set src(value) {
     this._src = value;
     if (this.src) {
-      if (typeof this._src === "string") {
+      if (typeof this._src === 'string') {
         this.loadImage();
       } else {
-        this.loadPreview(this._src, err => {
+        this.loadPreview(this._src, (err) => {
           if (err) {
-            return console.log("Error loading file: " + err);
+            return console.log('Error loading file: ' + err);
           }
 
           if (Boolean(this.autoUpload)) {
             this.uploadFile(this.src)
-              .then(result => {
+              .then((result) => {
                 console.log(`Upload returned X: ${JSON.stringify(result)}`);
                 this._result = result.shortid;
                 if (this.onUploaded) {
                   this.onUploaded(result);
                 }
               })
-              .catch(ex => {
+              .catch((ex) => {
                 console.log(`Upload returned Y: ${JSON.stringify(ex)}`);
               });
           }
@@ -75,7 +68,7 @@ export class MgImageComponent implements OnInit {
   }
 
   private _src: any;
-  private _state?= "init";
+  private _state? = 'init';
   private _busy = false;
   private _last_state?: string;
   private _result: any;
@@ -105,11 +98,11 @@ export class MgImageComponent implements OnInit {
     private _shared: SharedDataService,
     private _configuration: ConfigurationService
   ) {
-    this.prefix = _configuration.get("api") + "/content/render/"; //http://localhost:8888/v1/content/render/
+    // this.prefix = _configuration.get("api") + "/content/render/"; //http://localhost:8888/v1/content/render/
   }
 
   isDropTarget(el: any) {
-    return el === this._elementRef.nativeElement.querySelector("div");
+    return el === this._elementRef.nativeElement.querySelector('div');
   }
 
   click() {
@@ -140,7 +133,7 @@ export class MgImageComponent implements OnInit {
 
   private loadPreview(file: Blob, callback: (err?: string) => void) {
     const reader = new FileReader();
-    reader.onload = ev => {
+    reader.onload = (ev) => {
       const target = ev.target;
       if (target && target.result) {
         const image = new Image();
@@ -149,57 +142,56 @@ export class MgImageComponent implements OnInit {
         return callback();
       }
 
-      return ('Unable to load image from file');
+      return 'Unable to load image from file';
     };
-    reader.onerror = ev => { };
-    reader.onprogress = ev => { };
+    reader.onerror = (ev) => {};
+    reader.onprogress = (ev) => {};
 
     reader.readAsDataURL(file);
   }
 
   private uploadFile(file: string | Blob): Promise<any> {
     return new Promise((resolve, reject) => {
-
       if (!this.upload) {
         return reject('Invalid configuration, upload destination not configured');
       }
       const formData = new FormData();
       const xhr = new XMLHttpRequest();
 
-      formData.append("type", "image");
-      formData.append("file", file);
-      formData.append("selector", "listing-image");
-      console.log("upload with token ", this.auth.token);
+      formData.append('type', 'image');
+      formData.append('file', file);
+      formData.append('selector', 'listing-image');
+      console.log('upload with token ', this.auth.token);
 
-      xhr.open("POST", this.upload);
+      xhr.open('POST', this.upload);
 
-      xhr.setRequestHeader("authorization", "Bearer " + this.auth.token);
+      xhr.setRequestHeader('authorization', 'Bearer ' + this.auth.token);
 
-      xhr.addEventListener("load", ev => {
+      xhr.addEventListener('load', (ev) => {
         this._busy = false;
-        console.log("------- load --------" + xhr.responseText);
+        console.log('------- load --------' + xhr.responseText);
         return resolve(JSON.parse(xhr.responseText));
         // if (this.onUploaded) {
         //   this.onUploaded(JSON.parse(xhr.responseText));
         // }
       });
 
-      xhr.upload.addEventListener("error", ev => {
-        console.log("Error uploading file: " + ev);
-        console.log("RESE: " + xhr.responseText);
+      xhr.upload.addEventListener('error', (ev) => {
+        console.log('Error uploading file: ' + ev);
+        console.log('RESE: ' + xhr.responseText);
         return reject(xhr.responseText);
       });
 
-      xhr.upload.addEventListener("progress", pe => {
+      xhr.upload.addEventListener('progress', (pe) => {
         if (pe.lengthComputable) {
-          console.log("Total: " + pe.total);
-          console.log("Val: " + pe.loaded);
+          console.log('Total: ' + pe.total);
+          console.log('Val: ' + pe.loaded);
         }
       });
 
-      xhr.addEventListener("loadend", ev => {
-        console.log("loadend: " + ev);
-        console.log("RES: " + xhr.responseText);
+      xhr.addEventListener('loadend', (ev) => {
+        console.log('loadend: ' + ev);
+        console.log('RES: ' + xhr.responseText);
       });
 
       // this.showSpinner();
@@ -209,24 +201,24 @@ export class MgImageComponent implements OnInit {
   }
 
   private initDrop() {
-    const container = this._elementRef.nativeElement.querySelector("div");
+    const container = this._elementRef.nativeElement.querySelector('div');
     container.ondragenter = () => {
       if (!this._busy) {
         if (!this._last_state) {
           this._last_state = this._state;
         }
-        this._state = "drag";
-        console.log("enter");
+        this._state = 'drag';
+        console.log('enter');
       }
     };
-    container.ondragover = (ev: { preventDefault: () => void; }) => {
+    container.ondragover = (ev: { preventDefault: () => void }) => {
       ev.preventDefault();
     };
     container.ondragleave = () => {
       if (!this._busy) {
         this._state = this._last_state;
         this._last_state = undefined;
-        console.log("leave");
+        console.log('leave');
       }
     };
     container.ondrop = (ev: any) => {
@@ -234,11 +226,11 @@ export class MgImageComponent implements OnInit {
         this._state = this._last_state;
         this._last_state = undefined;
         ev.preventDefault();
-        console.log("DRO: " + ev.dataTransfer.files[0].name);
+        console.log('DRO: ' + ev.dataTransfer.files[0].name);
         const file = ev.dataTransfer.files[0];
         this.loadPreview(file, () => {
-          console.log("File displayed");
-          this.uploadFile(file).then(result => {
+          console.log('File displayed');
+          this.uploadFile(file).then((result) => {
             console.log(`File uploaded with result ${JSON.stringify(result)}`);
             if (this.onUploaded) {
               this.onUploaded(result);
@@ -250,7 +242,7 @@ export class MgImageComponent implements OnInit {
   }
 
   private loadImage() {
-    this._state = "loading";
+    this._state = 'loading';
     this._busy = true;
     if (this.loading) {
       this.activeImage = this.loading;
@@ -259,15 +251,15 @@ export class MgImageComponent implements OnInit {
     }
 
     const image = new Image();
-    image.addEventListener("load", () => {
+    image.addEventListener('load', () => {
       setTimeout(() => {
-        this._state = "ready";
+        this._state = 'ready';
         this.activeImage = image.src;
         this._busy = false;
       }, 300);
     });
 
-    image.addEventListener("error", err => {
+    image.addEventListener('error', (err) => {
       if (this.error) {
         this.activeImage = this.error;
       } else if (this.defaultImage) {
@@ -278,8 +270,9 @@ export class MgImageComponent implements OnInit {
       console.log(err);
     });
 
+    // console.log(`Getting from ......>>>>> ${this.prefix + this.src + this.suffix}`);
     fetch(this.prefix + this.src + this.suffix, {
-      headers: { Authorization: `Bearer ${this._shared.get("access_token")}` }
+      headers: { Authorization: `Bearer ${this._shared.get('access_token')}` },
     })
       .then(function (response) {
         return response.blob();
@@ -302,11 +295,8 @@ export class MgImageComponent implements OnInit {
 
   private headers() {
     let headers;
-    if (this._shared.get("access_token")) {
-      headers = new HttpHeaders().set(
-        "Authorization",
-        "Bearer " + this._shared.get("access_token")
-      );
+    if (this._shared.get('access_token')) {
+      headers = new HttpHeaders().set('Authorization', 'Bearer ' + this._shared.get('access_token'));
     }
     return headers;
   }

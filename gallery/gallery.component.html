@@ -1,12 +1,12 @@
-<!-- <div class="mg-gallery" [ngClass]="{ 'mg-gallery-drag': state === 'drag' }">
+<div class="mg-gallery" [ngClass]="{ 'mg-gallery-drag': state === 'drag' }">
   <mg-img
     *ngFor="let image of images"
-    [src]="image"
-    autoUpload="true"
-    loading="/assets/images/loading.png"
-    error="/assets/images/error.png"
     [prefix]="prefix"
     [suffix]="suffix"
+    [src]="image.image"
+    [autoUpload]="true"
+    loading="/assets/images/loading.png"
+    error="/assets/images/error.png"
     [upload]="upload"
     [onUploaded]="imageUploadCallback"
     [onDeleted]="remove"
@@ -15,4 +15,4 @@
     default="/assets/images/default.png"
     draggable="true"
   ></mg-img>
-</div> -->
+</div>

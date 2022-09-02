@@ -16,6 +16,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class MgInputComponent implements ControlValueAccessor {
   @Input() type = 'text';
   @Input() placeholder = '';
+  @Input() rows = 1;
   @Input() set value(val: any) {
     console.log(`set -> ${val}`);
     this._value = val;

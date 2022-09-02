@@ -7,6 +7,8 @@ import { MgModalService } from './modal.service';
   styleUrls: ['./modal.component.sass'],
 })
 export class MgModalComponent implements OnInit, OnDestroy {
+  @Input() size = 'small'; // medium | large
+
   constructor(private _modalService: MgModalService) {}
 
   open(): void {}

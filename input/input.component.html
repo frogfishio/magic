@@ -1,5 +1,8 @@
-<div class="pack text" *ngIf="type == 'text' || type == 'password'">
+<div class="pack text" *ngIf="(type == 'text' || type == 'password') && rows == 1">
   <input [type]="type" [placeholder]="placeholder" [value]="value" [(ngModel)]="value" />
+</div>
+<div class="text" *ngIf="type == 'text' && rows > 1">
+  <textarea [rows]="rows" [placeholder]="placeholder" [value]="value" [(ngModel)]="value" ></textarea>
 </div>
 <div class="pack" *ngIf="type == 'list'">
   <input type="text" [placeholder]="placeholder" [value]="value" />
